@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 1066022807}
   m_Layer: 0
   m_Name: Circle
-  m_TagString: Untagged
+  m_TagString: Circle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -329,7 +329,7 @@ Transform:
   m_GameObject: {fileID: 1066022803}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.03, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -347,7 +347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45ef409627d8904ea802c1567d9038b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
 --- !u!114 &1066022807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,10 +356,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1066022803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e160fb96c41d046a3349deff30642f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ce8d44c8a898334a8ba13eb37b18202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customColor: {r: 0, g: 1, b: 0, a: 1}
+  originalMaterial:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
+  customColor:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  circleOverlaps: 0
+  capsuleOverlaps: 0
+  squareOverlaps: 0
+  circle: {fileID: 1066022803}
+  square: {fileID: 1582250537}
+  capsule: {fileID: 2031533418}
 --- !u!1 &1582250537
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +389,7 @@ GameObject:
   - component: {fileID: 1582250541}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Square
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -441,7 +455,7 @@ Transform:
   m_GameObject: {fileID: 1582250537}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.1299999, y: -0.02, z: 0}
+  m_LocalPosition: {x: -3.05, y: -0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -459,8 +473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b4e8b1ae16897e43b339faff9e3765e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sideLength: 1
-  size: {x: 1, y: 1}
 --- !u!114 &1582250541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,10 +482,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1582250537}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e160fb96c41d046a3349deff30642f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ce8d44c8a898334a8ba13eb37b18202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customColor: {r: 0, g: 1, b: 0, a: 1}
+  originalMaterial:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
+  customColor:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  circleOverlaps: 0
+  capsuleOverlaps: 0
+  squareOverlaps: 0
+  circle: {fileID: 1066022803}
+  square: {fileID: 1582250537}
+  capsule: {fileID: 2031533418}
 --- !u!1 &2031533418
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,10 +512,9 @@ GameObject:
   - component: {fileID: 2031533420}
   - component: {fileID: 2031533419}
   - component: {fileID: 2031533421}
-  - component: {fileID: 2031533422}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Capsule
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -554,7 +580,7 @@ Transform:
   m_GameObject: {fileID: 2031533418}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.95, y: -0.01, z: 0}
+  m_LocalPosition: {x: 2.95, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -572,21 +598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79fb9573c23e2ea46aefab41a510d1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
-  height: 1
---- !u!114 &2031533422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031533418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e160fb96c41d046a3349deff30642f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  customColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
