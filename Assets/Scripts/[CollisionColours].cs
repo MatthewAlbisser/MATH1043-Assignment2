@@ -18,12 +18,12 @@ public class CollisionColours : MonoBehaviour
         Color square = Color.red;       // Part1: Declares object colours.
         Color capsule = Color.red;
 
-        if (circleSquare)               // Part1: If bool is true...
+        if (circleSquare)               // Part1: If bool method is true...
         {
             circle = Color.green;       // Part1: Both objects change to green.
             square = Color.green;
 
-            if (!circleSquare)          // Part1: If bool is false...
+            if (!circleSquare)          // Part1: If bool method is false...
             {
                 circle = Color.red;     // Part1: Both change back to red.
                 square = Color.red;
@@ -53,8 +53,6 @@ public class CollisionColours : MonoBehaviour
                 square = Color.red;
             }
         }
-
-        // 3. Shader with colors
         circleT.GetComponent<SpriteRenderer>().color = circle;
         squareT.GetComponent<SpriteRenderer>().color = square;
         capsuleT.GetComponent<SpriteRenderer>().color = capsule;
@@ -95,27 +93,18 @@ public class CollisionColours : MonoBehaviour
     bool CollisionSquareCapsule(Vector2 squareCenter, Vector2 capsuleCenter, float squareHalfLength, float capsuleRadius, float capsuleHeight)
     {
         float halfSquareSide = squareHalfLength;
+        float deltaX = Mathf.Abs(capsuleCenter.x - squareCenter.x); // Part1: Calculates the distances between centers.
+        float deltaY = Mathf.Abs(capsuleCenter.y - squareCenter.y);         
 
-        // Calculate the distances between centers
-        float deltaX = Mathf.Abs(capsuleCenter.x - squareCenter.x);
-        float deltaY = Mathf.Abs(capsuleCenter.y - squareCenter.y);
+        float combinedRadius = capsuleRadius + halfSquareSide;      // Part1: Calculate both objects radius sum.
 
-        // Calculate the combined radii
-        float combinedRadius = capsuleRadius + halfSquareSide;
-
-        // Check for overlap along the x-axis and y-axis
-        bool xOverlap = deltaX <= combinedRadius;
+        bool xOverlap = deltaX <= combinedRadius;                   // Part1: Check for overlap along the x-axis and y-axis
         bool yOverlap = deltaY <= combinedRadius;
-
-        // Check if there's an intersection on both x and y axes
-        if (xOverlap && yOverlap)
+        if (xOverlap && yOverlap)                                   // Part1: Check if there's an intersection on both x and y axes
         {
-            return true; // Collision detected
+            return true;                                            // Part1: When ther's a collision, set bool to true.
         }
-
-        // Check for collision with the capsule's rounded ends (circles)
-        float cornerDistanceSquared = Mathf.Pow(deltaX - halfSquareSide, 2) + Mathf.Pow(deltaY - halfSquareSide, 2);
-
+        float cornerDistanceSquared = Mathf.Pow(deltaX - halfSquareSide, 2) + Mathf.Pow(deltaY - halfSquareSide, 2);    // Part1: Check for collision with the capsule's rounded ends (circles)
         return cornerDistanceSquared <= (capsuleRadius * capsuleRadius);
     }
 }
