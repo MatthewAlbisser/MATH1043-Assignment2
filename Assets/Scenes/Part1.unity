@@ -390,10 +390,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1066022803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d45ef409627d8904ea802c1567d9038b, type: 3}
+  m_Script: {fileID: 11500000, guid: f3145ef7796406c4fa03b1640b9fbb25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.5
+  radius: 0
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &1582250537
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,11 +489,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1582250537}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4e8b1ae16897e43b339faff9e3765e, type: 3}
+  m_Script: {fileID: 11500000, guid: 570ad507bc4e8904999ef84b58a92a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sideLength: 1
-  size: {x: 1, y: 1}
+  sideLength: 0
+  size: {x: 0, y: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  jumpHeight: 10
+  jumpDuration: 0.5
 --- !u!1 &2031533418
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,11 +591,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2031533418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79fb9573c23e2ea46aefab41a510d1f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a86b8a59db51694c9b8933428daa6d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.5
-  height: 2
+  radius: 0
+  height: 0
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
