@@ -13,9 +13,26 @@ public class CapsuleCollision : MonoBehaviour
     private Vector3 acceleration = Vector3.zero;    // Part2: Vector for Initial acceleration.
     private Vector3 force = Vector3.zero;           // Part2: Vector for Initial force.
 
+    public float jumpHeight = 10.0f;    // Part3:
+    public float jumpDuration = 0.01f;  // Part3:
+    private float jumpStartTime;        // Part3:
+    private bool isJumping = false;     // Part3:
+    private Vector3 initialPosition;    // Part3:
+
+    public float capsuleRadius;
+    public float capsuleHeight;
+
+    private Vector3 capsuleTop;
+    private Vector3 capsuleBottom;
+
     void Start()
     {
         objectSize = transform.localScale;          // Part2: Vector for this objects size saved as variable on game start.
+
+        initialPosition = transform.position;
+
+        capsuleTop = transform.position + Vector3.up * (capsuleHeight / 2.0f);
+        capsuleBottom = transform.position - Vector3.up * (capsuleHeight / 2.0f);
     }
 
     void Update()
@@ -64,6 +81,28 @@ public class CapsuleCollision : MonoBehaviour
         else if (Input.GetKey(KeyCode.L))
         {
             transform.Translate(Vector3.right * speed * dt);
+
+
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isJumping)                                     // Part3: If mouse has right clicked and isJumping is not activated...
+        {
+            isJumping = true;                                                                   // Part3: Then isJumping is activated.
+            jumpStartTime = Time.time;                                                          // Part3: Then jumpStartTime holds current time. 
+        }
+        if (isJumping)                                                                          // Part3: If isJumping is activated...
+        {
+            float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;                    // Part3: Float to constantly update (time minus jumpStartTime) divided by jumpDiraction.
+            if (jumpProgress <= 1.0f)                                                           // Part3: If jumpProgress is less or equal to 1.0f...
+            {
+                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2));   // Part3:
+                transform.position = initialPosition + Vector3.up * jumpDistance;               // Part3:
+            }
+            else
+            {
+                isJumping = false;                                                              // Part3: Else isJumping is deactivated.
+                transform.position = initialPosition;                                           // Part3: object position reverts to initial position.
+            }
         }
     }
 }

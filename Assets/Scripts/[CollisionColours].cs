@@ -8,6 +8,16 @@ public class CollisionColours : MonoBehaviour
     public Transform squareT;       // Part1: Declares object positions
     public Transform capsuleT;
 
+    public float capsuleRadius;
+    public float capsuleHeight;
+
+    private Vector3 capsuleTop;
+    private Vector3 capsuleBottom;
+    private void Start()
+    {
+        capsuleTop = transform.position + Vector3.up * (capsuleHeight / 2.0f);
+        capsuleBottom = transform.position - Vector3.up * (capsuleHeight / 2.0f);
+    }
     void Update()
     {
         bool circleSquare = CollisionCircleSquare(circleT.position, squareT.position, 0.5f, 0.5f);
@@ -18,9 +28,7 @@ public class CollisionColours : MonoBehaviour
         Color squareC = Color.red;       // Part1: Declares object colours.
         Color capsuleC = Color.red;
 
-        circleT.GetComponent<SpriteRenderer>().color = circleC;
-        squareT.GetComponent<SpriteRenderer>().color = squareC;
-        capsuleT.GetComponent<SpriteRenderer>().color = capsuleC;
+       
 
         if (circleSquare)           // Part1: If bool method is true...
         {
@@ -37,6 +45,9 @@ public class CollisionColours : MonoBehaviour
             capsuleC = Color.green;
             squareC = Color.green;
         }
+        circleT.GetComponent<SpriteRenderer>().color = circleC;
+        squareT.GetComponent<SpriteRenderer>().color = squareC;
+        capsuleT.GetComponent<SpriteRenderer>().color = capsuleC;
     }
     bool CollisionCircleSquare(Vector2 circleCenter, Vector2 squareCenter, float circleRadius, float squareHalfLength)
     {
