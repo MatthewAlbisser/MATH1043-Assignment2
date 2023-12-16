@@ -11,16 +11,12 @@ public class CollisionColours : MonoBehaviour
     void Update()
     {
         bool circleSquare = CollisionCircleSquare(circleT.position, squareT.position, 0.5f, 0.5f);
-        bool capsuleCircle = CollisionCapsuleCircle(capsuleT.position, circleT.position, 0.5f, 0.5f, 1f);
+        bool capsuleCircle = CollisionCapsuleCircle(capsuleT.position, circleT.position, 0.5f, 0.5f, 1f);   // Colour bools for each method combination of collision. 
         bool squareCapsule = CollisionSquareCapsule(squareT.position, capsuleT.position, 0.5f, 0.5f, 1f);
 
-        Color circleC = Color.red;
+        Color circleC = Color.red;          
         Color squareC = Color.red;       // Part1: Declares object colours.
         Color capsuleC = Color.red;
-
-        circleT.GetComponent<SpriteRenderer>().color = circleC;
-        squareT.GetComponent<SpriteRenderer>().color = squareC;
-        capsuleT.GetComponent<SpriteRenderer>().color = capsuleC;
 
         if (circleSquare)           // Part1: If bool method is true...
         {
@@ -37,13 +33,16 @@ public class CollisionColours : MonoBehaviour
             capsuleC = Color.green;
             squareC = Color.green;
         }
+        circleT.GetComponent<SpriteRenderer>().color = circleC;
+        squareT.GetComponent<SpriteRenderer>().color = squareC;
+        capsuleT.GetComponent<SpriteRenderer>().color = capsuleC;
     }
-    bool CollisionCircleSquare(Vector2 circleCenter, Vector2 squareCenter, float circleRadius, float squareHalfLength)
+    bool CollisionCircleSquare(Vector2 circleCenter, Vector2 squareCenter, float circleRadius, float squareHalfL)
     {
-        float minX = squareCenter.x - squareHalfLength;
-        float maxX = squareCenter.x + squareHalfLength;
-        float minY = squareCenter.y - squareHalfLength;     
-        float maxY = squareCenter.y + squareHalfLength;
+        float minX = squareCenter.x - squareHalfL;     // Declares float for "-X" by calculating the center of the squares X axis, lowering by the squares half length.
+        float maxX = squareCenter.x + squareHalfL;
+        float minY = squareCenter.y - squareHalfL;
+        float maxY = squareCenter.y + squareHalfL;
 
         float closestX = Mathf.Clamp(circleCenter.x, minX, maxX);
         float closestY = Mathf.Clamp(circleCenter.y, minY, maxY);
@@ -83,7 +82,7 @@ public class CollisionColours : MonoBehaviour
         bool yOverlap = deltaY <= combinedRadius;
         if (xOverlap && yOverlap)                                   // Part1: Check if there's an intersection on both x and y axes
         {
-            return true;                                            // Part1: When ther's a collision, set bool to true.
+            return true;                                            // Part1: When there's a collision, set bool to true.
         }
         float cornerDistanceSquared = Mathf.Pow(deltaX - halfSquareSide, 2) + Mathf.Pow(deltaY - halfSquareSide, 2);    // Part1: Check for collision with the capsule's rounded ends (circles)
         return cornerDistanceSquared <= (capsuleRadius * capsuleRadius);

@@ -9,9 +9,9 @@ public class CapsuleCollision : MonoBehaviour
     float speed = 5.0f;     // Part1: Simple float to hold object speed.
 
     private Vector3 objectSize;                     // Part2: Vector for Initial object size.
-    public Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
-    private Vector3 acceleration = Vector3.zero;    // Part2: Vector for Initial acceleration.
-    private Vector3 force = Vector3.zero;           // Part2: Vector for Initial force.
+    public Vector3 velocity         = Vector3.zero; // Part2: Vector for Initial velocity.
+    private Vector3 acceleration    = Vector3.zero; // Part2: Vector for Initial acceleration.
+    private Vector3 force           = Vector3.zero; // Part2: Vector for Initial force.
 
     void Start()
     {
@@ -22,7 +22,7 @@ public class CapsuleCollision : MonoBehaviour
     {
         float dt = Time.deltaTime;                  // Part1: Float that holds real time.
     //---GRAVITY FORCE---//
-        float mass = 30000f;    // Part2: Declared float for mass.
+        float mass = 30f;    // Part2: Declared float for mass.
         float gravity = 9.8f;   // Part2: Declared float for gravity.
 
         Vector3 gravityMass = mass * Vector3.down * gravity;    // Part2: Calculates this objects downward force and calls it gravityMass.
