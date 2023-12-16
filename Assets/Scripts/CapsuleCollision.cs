@@ -41,7 +41,7 @@ public class CapsuleCollision : MonoBehaviour
         {
             velocity = Vector3.zero;                                                // Part2: Velcocity for this object is reset.
             acceleration = Vector3.zero;                                            // Part2: Acceleration for this object is reset.
-            float radiusY = objectSize.y / 2;                                       // Part2: Float to hold the Y axis points of the falling object.
+            float radiusY = objectSize.y;                                       // Part2: Float to hold the Y axis points of the falling object.
             float distanceToGround = Mathf.Abs(transform.position.y - radiusY);     // Part2: Float to hold the remaining Y axis distance from the ground.
             Vector3 upOffset = Vector3.up * distanceToGround;                       // Part2: Declares vector thats pushing upwards based on the total distance from the ground. 
 
