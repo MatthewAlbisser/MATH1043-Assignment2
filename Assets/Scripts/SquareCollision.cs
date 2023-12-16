@@ -23,10 +23,10 @@ public class SquareCollision : MonoBehaviour
     {
         float dt = Time.deltaTime;  // Part1: Float that holds real time.
     //---GRAVITY FORCE---//
-        float mass = 10f;        // Part2: Declared float for mass.
-        float gravity = 9.8f;    // Part2: Declared float for gravity.
+        float mass = 10f;           // Part2: Declared float for mass.
+        float gravity = 9.8f;       // Part2: Declared float for gravity.
 
-    Vector3 gravityMass = mass * Vector3.down * gravity;    // Part2: Calculates this objects downward force and calls it gravityMass.
+    Vector3 gravityMass = mass * Vector3.down * gravity;        // Part2: Calculates this objects downward force and calls it gravityMass.
         force += gravityMass;                                   // Part2: Apllies gravityMass to objects force vector.
 
         acceleration = force / mass;                            // Part2: Calculates acceleration using force and mass.
@@ -35,7 +35,7 @@ public class SquareCollision : MonoBehaviour
 
         force = Vector3.zero;                                   // Part2: Reverts back force vector every frame; doesnt stack velocity.
     //---GROUND COLLISION---//
-        Ground ground = FindObjectOfType<Ground>();     // Part2: Declares a variable for the Ground game object.
+        Ground ground = FindObjectOfType<Ground>();             // Part2: Declares a variable for the Ground game object.
 
         bool hasCollided = ground.GroundCollision(transform.position, objectSize.y);    // Part2: Declares a bool for the activation of the GroundCollision method in the Ground script.
         if (hasCollided)
