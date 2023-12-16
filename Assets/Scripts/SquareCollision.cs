@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 
 public class SquareCollision : MonoBehaviour
@@ -14,27 +11,29 @@ public class SquareCollision : MonoBehaviour
     private Vector3 acceleration = Vector3.zero;    // Part2: Vector for Initial acceleration.
     private Vector3 force = Vector3.zero;           // Part2: Vector for Initial force.
 
-    public float jumpHeight = 5.0f;     // Part3:
-    public float jumpDuration = 0.5f;   // Part3:
-
-    private bool isJumping = false;     // Part3:
+    public float jumpHeight = 10.0f;    // Part3:
+    public float jumpDuration = 0.01f;  // Part3:
     private float jumpStartTime;        // Part3:
+    private bool isJumping = false;     // Part3:
     private Vector3 initialPosition;    // Part3:
+
+    public float mass = 10000f;          // Part2: Declared float for mass.
 
     void Start()
     {
-        objectSize = transform.localScale;      // Part2: Vector for this objects size saved as variable on game start.
-        initialPosition = transform.position;   // Part3: 
+        objectSize = transform.localScale;  // Part2: Vector for this objects size saved as variable on game start.
+
+        initialPosition = force;            // Part3: 
     }
 
     void Update()
     {
         float dt = Time.deltaTime;  // Part1: Float that holds real time.
     //---GRAVITY FORCE---//
-        float mass = 10f;           // Part2: Declared float for mass.
+        float mass = 10f;          // Part2: Declared float for mass.
         float gravity = 9.8f;       // Part2: Declared float for gravity.
 
-        Vector3 gravityMass = mass * Vector3.down * gravity;    // Part2: Calculates this objects downward force and calls it gravityMass.
+        Vector3 gravityMass = gravity * mass * Vector3.down;    // Part2: Calculates this objects downward force and calls it gravityMass.
         force += gravityMass;                                   // Part2: Apllies gravityMass to objects force vector.
 
         acceleration = force / mass;                            // Part2: Calculates acceleration using force and mass.
@@ -42,6 +41,7 @@ public class SquareCollision : MonoBehaviour
         transform.position += velocity * dt;                    // Part2: Updates object position based on velocity and real time.
 
         force = Vector3.zero;                                   // Part2: Reverts back force vector every frame; doesnt stack velocity.
+
     //---GROUND COLLISION---//
         Ground ground = FindObjectOfType<Ground>();             // Part2: Declares a variable for the Ground game object.
 
@@ -66,7 +66,6 @@ public class SquareCollision : MonoBehaviour
         {
             transform.Translate(Vector3.down * speed * dt);
         }
-
         if (Input.GetKey(KeyCode.A))
         {
             transform.Translate(Vector3.left * speed * dt);
@@ -77,23 +76,23 @@ public class SquareCollision : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !isJumping)                                      // Part3:
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isJumping)                                     // Part3: If mouse has right clicked and isJumping is not activated...
         {
-            isJumping = true;                                                                   // Part3:
-            jumpStartTime = Time.time;                                                          // Part3:
+            isJumping = true;                                                                   // Part3: Then isJumping is activated.
+            jumpStartTime = Time.time;                                                          // Part3: Then jumpStartTime holds current time. 
         }
-        if (isJumping)                                                                          // Part3:
+        if (isJumping)                                                                          // Part3: If isJumping is activated...
         {
-            float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;                    // Part3:
-            if (jumpProgress <= 1.0f)
+            float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;                    // Part3: Float to constantly update (time minus jumpStartTime) divided by jumpDiraction.
+            if (jumpProgress <= 1.0f)                                                           // Part3: If jumpProgress is less or equal to 1.0f...
             {
                 float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2));   // Part3:
                 transform.position = initialPosition + Vector3.up * jumpDistance;               // Part3:
             }
             else
             {
-                isJumping = false;                                                              // Part3:
-                transform.position = initialPosition;                                           // Part3:
+                isJumping = false;                                                              // Part3: Else isJumping is deactivated.
+                transform.position = initialPosition;                                           // Part3: object position reverts to initial position.
             }
         }
     }

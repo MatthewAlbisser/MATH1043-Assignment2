@@ -14,48 +14,29 @@ public class CollisionColours : MonoBehaviour
         bool capsuleCircle = CollisionCapsuleCircle(capsuleT.position, circleT.position, 0.5f, 0.5f, 1f);
         bool squareCapsule = CollisionSquareCapsule(squareT.position, capsuleT.position, 0.5f, 0.5f, 1f);
 
-        Color circle = Color.red;
-        Color square = Color.red;       // Part1: Declares object colours.
-        Color capsule = Color.red;
+        Color circleC = Color.red;
+        Color squareC = Color.red;       // Part1: Declares object colours.
+        Color capsuleC = Color.red;
 
-        if (circleSquare)               // Part1: If bool method is true...
+        circleT.GetComponent<SpriteRenderer>().color = circleC;
+        squareT.GetComponent<SpriteRenderer>().color = squareC;
+        capsuleT.GetComponent<SpriteRenderer>().color = capsuleC;
+
+        if (circleSquare)           // Part1: If bool method is true...
         {
-            circle = Color.green;       // Part1: Both objects change to green.
-            square = Color.green;
-
-            if (!circleSquare)          // Part1: If bool method is false...
-            {
-                circle = Color.red;     // Part1: Both change back to red.
-                square = Color.red;
-            }
+            circleC = Color.green;  // Part1: Both objects change to green.
+            squareC = Color.green;  // Part1: Both objects change to green.
         }
-
         if (capsuleCircle)
         {
-            circle = Color.green;
-            capsule = Color.green;
-
-            if (!capsuleCircle)
-            {
-                circle = Color.red;
-                capsule = Color.red;
-            }
+            circleC = Color.green;
+            capsuleC = Color.green;
         }
-
         if (squareCapsule)
         {
-            capsule = Color.green;
-            square = Color.green;
-
-            if (!squareCapsule)
-            {
-                capsule = Color.red;
-                square = Color.red;
-            }
+            capsuleC = Color.green;
+            squareC = Color.green;
         }
-        circleT.GetComponent<SpriteRenderer>().color = circle;
-        squareT.GetComponent<SpriteRenderer>().color = square;
-        capsuleT.GetComponent<SpriteRenderer>().color = capsule;
     }
     bool CollisionCircleSquare(Vector2 circleCenter, Vector2 squareCenter, float circleRadius, float squareHalfLength)
     {

@@ -22,8 +22,8 @@ public class CapsuleCollision : MonoBehaviour
     {
         float dt = Time.deltaTime;                  // Part1: Float that holds real time.
     //---GRAVITY FORCE---//
-        float mass = 30f;        // Part2: Declared float for mass.
-        float gravity = 9.8f;    // Part2: Declared float for gravity.
+        float mass = 30000f;    // Part2: Declared float for mass.
+        float gravity = 9.8f;   // Part2: Declared float for gravity.
 
         Vector3 gravityMass = mass * Vector3.down * gravity;    // Part2: Calculates this objects downward force and calls it gravityMass.
         force += gravityMass;                                   // Part2: Apllies gravityMass to objects force vector.
