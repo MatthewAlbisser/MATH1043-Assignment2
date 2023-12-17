@@ -82,7 +82,7 @@ public class CircleCollision : MonoBehaviour
             float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;                    // Part3: Float to constantly update (time minus jumpStartTime) divided by jumpDiraction.
             if (jumpProgress <= 1.0f)                                                           // Part3: If jumpProgress is less or equal to 1.0f...
             {
-                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2));   // Part3: Quadratic jump curve
+                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 3));   // Part3: Quadratic jump curve
                 transform.position = initialPosition + Vector3.up * jumpDistance;               // Part3:
             }
             else
@@ -97,7 +97,7 @@ public class CircleCollision : MonoBehaviour
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = Camera.main.transform.position.z;
             Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            if (IsPointInsideCircle(worldMousePos, transform.position, circleRadius))
+            if (CircleCollider(worldMousePos, transform.position, circleRadius))
             {
                 if (!isJumping)
                 {
@@ -107,7 +107,7 @@ public class CircleCollision : MonoBehaviour
             }
         }
     }
-    bool IsPointInsideCircle(Vector3 point, Vector3 circleCenter, float radius)
+    bool CircleCollider(Vector3 point, Vector3 circleCenter, float radius)
     {
         float distanceSquared = (point.x - circleCenter.x) * (point.x - circleCenter.x) +           // Calculates the distance between the point and the center of the circle
                                 (point.y - circleCenter.y) * (point.y - circleCenter.y);

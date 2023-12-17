@@ -6,14 +6,14 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class CapsuleCollision : MonoBehaviour
 {
     private Vector3 objectSize;                     // Part2: Vector for Initial object size.
-    private Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
+    private Vector3 velocity = Vector3.zero;        // Part2: Vector for Initial velocity.
     private Vector3 acceleration = Vector3.zero;    // Part2: Vector for Initial acceleration.
     private Vector3 force = Vector3.zero;           // Part2: Vector for Initial force.
 
-    private float jumpHeight = 5.0f;     // Part3:
-    private float jumpDuration = 0.5f;   // Part3:
-    private float capsuleRadius = 0.5f;  // Part3:
-    private float capsuleHeight = 2.0f;  // Part3:
+    private float jumpHeight = 10.0f;   // Part3:
+    private float jumpDuration = 0.5f;  // Part3:
+    private float capsuleRadius = 0.5f; // Part3:
+    private float capsuleHeight = 2.0f; // Part3:
 
     private bool isJumping = false;
     private float jumpStartTime;
@@ -29,7 +29,11 @@ public class CapsuleCollision : MonoBehaviour
     void Update()
     {
         float dt = Time.deltaTime;                  // Part1: Float that holds real time.
-                                                    //---GRAVITY FORCE---//
+
+
+    //---GRAVITY FORCE---//
+
+
         float mass = 30f;       // Part2: Declared float for mass.
         float gravity = 9.8f;   // Part2: Declared float for gravity.
 
@@ -44,7 +48,7 @@ public class CapsuleCollision : MonoBehaviour
                                                                 //---GROUND COLLISION---//
         Ground ground = FindObjectOfType<Ground>();             // Part2: Declares a variable for the Ground game object.
 
-        bool hasCollided = ground.GroundCollision(transform.position, objectSize.y);    // Part2: Declares a bool for the activation of the GroundCollision method in the Ground script.
+        bool hasCollided = ground.GroundCollision(transform.position, objectSize.y * 2);    // Part2: Declares a bool for the activation of the GroundCollision method in the Ground script.
         if (hasCollided)
         {
             velocity = Vector3.zero;                                                // Part2: Velcocity for this object is reset.
@@ -85,13 +89,13 @@ public class CapsuleCollision : MonoBehaviour
 
             if (jumpProgress <= 1.0f)
             {
-                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2)); // Simple quadratic jump curve
+                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 4)); // Simple quadratic jump curve
                 transform.position = initialPosition + Vector3.up * jumpDistance;
             }
             else
             {
                 isJumping = false;
-                transform.position = initialPosition; // Reset the object's position after the jump
+                transform.position = initialPosition;
             }
         }
 
@@ -100,9 +104,7 @@ public class CapsuleCollision : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // Check if the mouse click is within the capsule using math-based collision detection
-            if (IsPointInsideCapsule2D(mousePos, (Vector3)transform.position, capsuleRadius, capsuleHeight))
+            if (CapsuleCollider(mousePos, (Vector3)transform.position, capsuleRadius, capsuleHeight))
             {
                 if (!isJumping)
                 {
@@ -113,22 +115,17 @@ public class CapsuleCollision : MonoBehaviour
         }
     }
 
-    bool IsPointInsideCapsule2D(Vector2 point, Vector2 capsuleCenter, float radius, float height)
+    bool CapsuleCollider(Vector2 point, Vector2 capsuleCenter, float radius, float height)
     {
         float distanceX = Mathf.Abs(point.x - capsuleCenter.x);
         float distanceY = Mathf.Abs(point.y - capsuleCenter.y);
 
-        if (distanceX <= radius && distanceY <= height * 0.5f)
-        {
-            return true; // Inside the cylindrical part
-        }
-
         if (distanceX <= radius && (distanceY >= height * 0.5f - radius || distanceY <= radius - height * 0.5f))
         {
-            return true; // Inside one of the semicircular ends
+            return true;
         }
 
-        return false; // Outside the capsule
+        return false;
     }
 }
 

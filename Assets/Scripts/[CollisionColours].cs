@@ -55,44 +55,50 @@ public class CollisionColours : MonoBehaviour
         return distanceSquared < (circleRadius * circleRadius);
     }
 
-    bool CollisionCapsuleCircle(Vector2 circleCenter, Vector2 capsuleCenter, float circleRadius, float capsuleRadius, float capsuleHeight)
+    bool CollisionCapsuleCircle(Vector2 capsuleCenter, Vector2 circleCenter,float capsuleHeight, float capsuleRadius, float circleRadius)
     {
-        float distanceX = Mathf.Abs(circleCenter.x - capsuleCenter.x);
-        float distanceY = Mathf.Abs(circleCenter.y - capsuleCenter.y);
+        float deltaX = Mathf.Abs(capsuleCenter.x - circleCenter.x);
+        float deltaY = Mathf.Abs(capsuleCenter.y - circleCenter.y);
 
-        if (distanceX > (capsuleRadius + circleRadius)) return false;
-        if (distanceY > (capsuleRadius + circleRadius)) return false;
-
-        if (distanceX <= capsuleRadius || distanceY <= capsuleRadius) return true;
-
-        float halfHeight = capsuleHeight * 0.5f;
-        float distanceToTopSphere = Mathf.Sqrt((circleCenter.x - capsuleCenter.x) * (circleCenter.x - capsuleCenter.x) +
-                                                       (circleCenter.y - capsuleCenter.y - halfHeight) * (circleCenter.y - capsuleCenter.y - halfHeight));
-
-        float distanceToBottomSphere = Mathf.Sqrt((circleCenter.x - capsuleCenter.x) * (circleCenter.x - capsuleCenter.x) +
-                                                  (circleCenter.y - capsuleCenter.y + halfHeight) * (circleCenter.y - capsuleCenter.y + halfHeight));
-
-        if (distanceToTopSphere <= circleRadius || distanceToBottomSphere <= circleRadius)
+        if (deltaX <= capsuleRadius + circleRadius && deltaY <= capsuleHeight / 2 + circleRadius)
         {
-            return true; // Inside one of the hemispherical ends
+            float minY = capsuleCenter.y - capsuleHeight / 2;
+            float maxY = capsuleCenter.y + capsuleHeight / 2;
+
+            if (circleCenter.y >= minY && circleCenter.y <= maxY)
+            {
+                return true;
+            }
         }
-        return false; // Outside the capsule
+
+        float cornerDistanceSquared = Mathf.Pow(deltaX, 2) + Mathf.Pow(deltaY - capsuleHeight / 2, 2);
+        return cornerDistanceSquared <= Mathf.Pow(capsuleRadius + circleRadius, 2);
     }
     bool CollisionSquareCapsule(Vector2 squareCenter, Vector2 capsuleCenter, float squareHalfLength, float capsuleRadius, float capsuleHeight)
     {
         float halfSquareSide = squareHalfLength;
-        float deltaX = Mathf.Abs(capsuleCenter.x - squareCenter.x); // Part1: Calculates the distances between centers.
+
+        float deltaX = Mathf.Abs(capsuleCenter.x - squareCenter.x);
         float deltaY = Mathf.Abs(capsuleCenter.y - squareCenter.y);
+        float combinedRadius = capsuleRadius + halfSquareSide;
 
-        float combinedRadius = capsuleRadius + halfSquareSide;      // Part1: Calculate both objects radius sum.
-
-        bool xOverlap = deltaX <= combinedRadius;                   // Part1: Check for overlap along the x-axis and y-axis
+        bool xOverlap = deltaX <= combinedRadius;
         bool yOverlap = deltaY <= combinedRadius;
-        if (xOverlap && yOverlap)                                   // Part1: Check if there's an intersection on both x and y axes
+
+        if (xOverlap && yOverlap)
         {
-            return true;                                            // Part1: When there's a collision, set bool to true.
+            float minY = capsuleCenter.y - capsuleHeight / 2;
+            float maxY = capsuleCenter.y + capsuleHeight / 2;
+
+            float squareMinY = squareCenter.y - halfSquareSide;
+            float squareMaxY = squareCenter.y + halfSquareSide;
+
+            if (squareMaxY >= minY && squareMinY <= maxY)
+            {
+                return true;
+            }
         }
-        float cornerDistanceSquared = Mathf.Pow(deltaX - halfSquareSide, 2) + Mathf.Pow(deltaY - halfSquareSide, 2);    // Part1: Check for collision with the capsule's rounded ends (circles)
+        float cornerDistanceSquared = Mathf.Pow(deltaX - halfSquareSide, 2) + Mathf.Pow(deltaY - halfSquareSide, 2);
         return cornerDistanceSquared <= (capsuleRadius * capsuleRadius);
     }
 }
