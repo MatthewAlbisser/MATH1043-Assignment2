@@ -10,7 +10,7 @@ public class SquareCollision : MonoBehaviour
     private Vector3 objectSize;                 // Part2: Vector for Initial object size.
     private Vector3 velocity = Vector3.zero;    // Part2: Vector for Initial velocity.
 
-    private float jumpHeight = 10.0f;       // Part3:
+    private float jumpHeight = 15.0f;       // Part3:
     private float jumpDuration = 1.0f;      // Part3:
     private float jumpStartTime;            // Part3:
     private bool isJumping = false;         // Part3:
@@ -75,9 +75,9 @@ public class SquareCollision : MonoBehaviour
         if (isJumping)                                                                          // Part3: If isJumping is activated...
         {
             float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;                    // Part3: Float to constantly update (time minus jumpStartTime) divided by jumpDiraction.
-            if (jumpProgress <= 1.5f)                                                           // Part3: If jumpProgress is less or equal to 1.0f...
+            if (jumpProgress <= 1.0f)                                                           // Part3: If jumpProgress is less or equal to 1.0f...
             {
-                float jumpDistance = jumpHeight * (1 - Mathf.Pow((4 * jumpProgress - 1), 2));   // Part3: Quadratic jump curve
+                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2));   // Part3: Quadratic jump curve
                 transform.position = initialPosition + Vector3.up * jumpDistance;               // Part3:
             }
             else

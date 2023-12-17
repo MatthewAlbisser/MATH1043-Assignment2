@@ -12,8 +12,8 @@ public class CircleCollision : MonoBehaviour
     private Vector3 objectSize;                     // Part2: Vector for Initial object size.
     private Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
 
-    private float jumpHeight = 10.0f;        // Part3:
-    private float jumpDuration = 0.5f;       // Part3:
+    private float jumpHeight = 15.0f;        // Part3:
+    private float jumpDuration = 1.0f;       // Part3:
     private float jumpStartTime;            // Part3:
     private bool isJumping = false;         // Part3:
     private Vector3 initialPosition;        // Part3:

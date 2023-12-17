@@ -5,13 +5,16 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class CapsuleCollision : MonoBehaviour
 {
+    float mass = 30f;       // Part2: Declared float for mass.
+    float gravity = 9.8f;   // Part2: Declared float for gravity.
+
     private Vector3 objectSize;                     // Part2: Vector for Initial object size.
     private Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
     private Vector3 acceleration = Vector3.zero;    // Part2: Vector for Initial acceleration.
     private Vector3 force = Vector3.zero;           // Part2: Vector for Initial force.
 
-    private float jumpHeight = 5.0f;     // Part3:
-    private float jumpDuration = 0.5f;   // Part3:
+    private float jumpHeight = 15.0f;    // Part3:
+    private float jumpDuration = 1.0f;   // Part3:
     private float capsuleRadius = 0.5f;  // Part3:
     private float capsuleHeight = 2.0f;  // Part3:
 
@@ -29,9 +32,8 @@ public class CapsuleCollision : MonoBehaviour
     void Update()
     {
         float dt = Time.deltaTime;                  // Part1: Float that holds real time.
-                                                    //---GRAVITY FORCE---//
-        float mass = 30f;       // Part2: Declared float for mass.
-        float gravity = 9.8f;   // Part2: Declared float for gravity.
+
+    //---GRAVITY FORCE---//
 
         Vector3 gravityMass = mass * Vector3.down * gravity;    // Part2: Calculates this objects downward force and calls it gravityMass.
         force += gravityMass;                                   // Part2: Apllies gravityMass to objects force vector.
@@ -41,10 +43,14 @@ public class CapsuleCollision : MonoBehaviour
         transform.position += velocity * dt;                    // Part2: Updates object position based on velocity and real time.
 
         force = Vector3.zero;                                   // Part2: Reverts back force vector every frame; doesnt stack velocity.
-                                                                //---GROUND COLLISION---//
+
+
+     //---GROUND COLLISION---//
+
+
         Ground ground = FindObjectOfType<Ground>();             // Part2: Declares a variable for the Ground game object.
 
-        bool hasCollided = ground.GroundCollision(transform.position, objectSize.y);    // Part2: Declares a bool for the activation of the GroundCollision method in the Ground script.
+        bool hasCollided = ground.GroundCollision(transform.position, objectSize.y * 2);    // Part2: Declares a bool for the activation of the GroundCollision method in the Ground script.
         if (hasCollided)
         {
             velocity = Vector3.zero;                                                // Part2: Velcocity for this object is reset.
