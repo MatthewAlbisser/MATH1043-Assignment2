@@ -6,10 +6,10 @@ public class SquareCollision : MonoBehaviour
     public Vector2 size;            // Part1: Of square
     readonly float speed = 5.0f;    // Part1: Simple float to hold object speed. Readonly.
 
-    float mass = 10f;          // Part2: Declared float for mass.
-    float gravity = 9.8f;       // Part2: Declared float for gravity.
-    private Vector3 objectSize;                     // Part2: Vector for Initial object size.
-    public Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
+    float mass = 10f;                       // Part2: Declared float for mass.
+    float gravity = 9.8f;                   // Part2: Declared float for gravity.
+    private Vector3 objectSize;             // Part2: Vector for Initial object size.
+    public Vector3 velocity = Vector3.zero; // Part2: Vector for Initial velocity.
 
     public float jumpHeight = 10.0f;        // Part3:
     public float jumpDuration = 0.5f;       // Part3:
@@ -20,14 +20,13 @@ public class SquareCollision : MonoBehaviour
 
     void Start()
     {
-        objectSize = transform.localScale;      // Part2: Vector for this objects size saved as variable on game start.
+        objectSize = transform.localScale;  // Part2: Vector for this objects size saved as variable on game start.
         initialPosition = transform.position;
-        //jumpStartTime = Time.time;            // Part3: Then jumpStartTime holds current time.
     }
 
     void Update()
     {
-        float dt = Time.deltaTime;  // Part1: Float that holds real time.
+        float dt = Time.deltaTime;          // Part1: Float that holds real time.
 
     //---GRAVITY FORCE---//
 
@@ -48,28 +47,29 @@ public class SquareCollision : MonoBehaviour
             Vector3 upOffset = Vector3.up * distanceToGround;                   // Part2: Declares vector thats pushing upwards based on the total distance from the ground. 
             transform.position += upOffset;                                     // Part2: Objects position and upOffset are added, replacing the objects position.
         }
+
     //---CONTROL VECTORS---//
 
-        Vector3 direction = Vector3.zero;                                       // Part1: When no key is pressed, all player created directional force reverts back to zero.
-        if (Input.GetKey(KeyCode.W))                                            // Part1: If set key is pressed...
+        Vector3 direction = Vector3.zero;       // Part2: When no key is pressed, all player created directional force reverts back to zero.
+        if (Input.GetKey(KeyCode.W))            // Part2: If set key is pressed...
         {
-            transform.Translate(Vector3.up * speed * dt);                       // Part1: Object moves in set direction with a magnitude of speed by time. 
+            velocity += Vector3.up * speed;     // Part2: Object moves in set direction with a magnitude of speed by time. 
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.down * speed * dt);
+            velocity += Vector3.down * speed;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector3.left * speed * dt);
+            velocity += Vector3.left * speed;
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector3.right * speed * dt);
+            velocity += Vector3.right * speed;
         }
-        transform.position += velocity * dt;
+        transform.position += velocity * dt;    // Part2: Applies velocity to object position.
 
-    //---IMPULSE JUMP---//
+        //---IMPULSE JUMP---//
 
         if (isJumping)                                                                          // Part3: If isJumping is activated...
         {
@@ -81,10 +81,11 @@ public class SquareCollision : MonoBehaviour
             }
             else
             {
-                isJumping = false;                                                              // Part3: Else isJumping is deactivated.                                                                               //  transform.position = initialPosition;                                           // Part3: object position reverts to initial position.
-                transform.position = initialPosition;                                           // Reset the object's position after the jump
+                isJumping = false;                          // Part3: Else isJumping is deactivated.
+                transform.position = initialPosition;       // Part3: Reset the object's position after the jump
             }
         }
+
         if (Input.GetMouseButtonDown(0))                                        // Part3: If left mouse is clicked...
         {
             Vector3 mousePos = Input.mousePosition;                             // Part3: Create a vector for last mouse click position.
