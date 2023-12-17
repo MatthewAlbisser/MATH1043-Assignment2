@@ -10,7 +10,7 @@ public class CapsuleCollision : MonoBehaviour
     private Vector3 acceleration = Vector3.zero;    // Part2: Vector for Initial acceleration.
     private Vector3 force = Vector3.zero;           // Part2: Vector for Initial force.
 
-    private float jumpHeight = 10.0f;   // Part3:
+    private float jumpHeight = 15.0f;   // Part3:
     private float jumpDuration = 0.5f;  // Part3:
     private float capsuleRadius = 0.5f; // Part3:
     private float capsuleHeight = 2.0f; // Part3:
@@ -29,6 +29,7 @@ public class CapsuleCollision : MonoBehaviour
     void Update()
     {
         float dt = Time.deltaTime;                  // Part1: Float that holds real time.
+
 
 
     //---GRAVITY FORCE---//
@@ -59,6 +60,8 @@ public class CapsuleCollision : MonoBehaviour
 
             transform.position += upOffset;                                         // Part2: Objects position and upOffset are added, replacing the objects position.
         }
+
+
 
         //---CONTROL VECTORS---//
 
@@ -98,9 +101,6 @@ public class CapsuleCollision : MonoBehaviour
                 transform.position = initialPosition;
             }
         }
-
-
-        // Check for mouse clicks
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

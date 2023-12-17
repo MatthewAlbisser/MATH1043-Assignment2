@@ -4,9 +4,6 @@ public class SquareCollision : MonoBehaviour
 {
     public float sideLength;        // Part1: Of square
     public Vector2 size;            // Part1: Of square
-
-    private float mass = 10f;                   // Part2: Declared float for mass.
-    private float gravity = 9.8f;               // Part2: Declared float for gravity.
     private Vector3 objectSize;                 // Part2: Vector for Initial object size.
     private Vector3 velocity = Vector3.zero;    // Part2: Vector for Initial velocity.
 
@@ -31,10 +28,13 @@ public class SquareCollision : MonoBehaviour
 
         //---GRAVITY FORCE---//
 
-        Vector3 force = mass * gravity * Vector3.down;          // Part2: Calculates this objects downward force using mass and gravity. 
-        Vector3 acceleration = force / mass;                    // Part2: Calculates acceleration using force and mass.
-        velocity += acceleration * dt;                          // Part2: Updates velocity using acceleration and real time.
-        transform.position += velocity * dt;                    // Part2: Updates object position based on velocity and real time.
+
+        float mass = 10f;                               // Part2: Declared float for mass.
+        float gravity = 9.8f;                           // Part2: Declared float for gravity.
+        Vector3 force = mass * gravity * Vector3.down;  // Part2: Calculates this objects downward force using mass and gravity. 
+        Vector3 acceleration = force / mass;            // Part2: Calculates acceleration using force and mass.
+        velocity += acceleration * dt;                  // Part2: Updates velocity using acceleration and real time.
+        transform.position += velocity * dt;            // Part2: Updates object position based on velocity and real time.
 
 
 
@@ -45,7 +45,7 @@ public class SquareCollision : MonoBehaviour
         if (hasCollided)
         {
             velocity = Vector3.zero;                                            // Part2: Velcocity for this object is reset.
-            float radiusY = objectSize.y / 2;                                   // Part2: Float to hold the Y axis points of the falling object.
+            float radiusY = objectSize.y;                                   // Part2: Float to hold the Y axis points of the falling object.
             float distanceToGround = Mathf.Abs(transform.position.y - radiusY); // Part2: Float to hold the remaining Y axis distance from the ground.
             Vector3 upOffset = Vector3.up * distanceToGround;                   // Part2: Declares vector thats pushing upwards based on the total distance from the ground. 
             transform.position += upOffset;                                     // Part2: Objects position and upOffset are added, replacing the objects position.

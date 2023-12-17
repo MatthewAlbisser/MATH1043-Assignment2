@@ -85,7 +85,7 @@ public class CollisionColours : MonoBehaviour
         bool xOverlap = deltaX <= combinedRadius;
         bool yOverlap = deltaY <= combinedRadius;
 
-        if (xOverlap && yOverlap)
+        if (xOverlap || yOverlap)
         {
             float minY = capsuleCenter.y - capsuleHeight / 2;
             float maxY = capsuleCenter.y + capsuleHeight / 2;

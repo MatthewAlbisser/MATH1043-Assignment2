@@ -6,9 +6,6 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class CircleCollision : MonoBehaviour
 {
     public float radius;         // Part1: Of circle
-
-    private float mass = 15f;          // Part2: Declared float for mass.
-    private float gravity = 9.8f;       // Part2: Declared float for gravity.
     private Vector3 objectSize;                     // Part2: Vector for Initial object size.
     private Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
 
@@ -29,12 +26,18 @@ public class CircleCollision : MonoBehaviour
     {
         float dt = Time.deltaTime;              // Part1: Float that holds real time.
 
+
+
         //---GRAVITY FORCE---//
 
+        float mass = 15f;          // Part2: Declared float for mass.
+        float gravity = 9.8f;       // Part2: Declared float for gravity.
         Vector3 force = mass * gravity * Vector3.down;          // Part2: Calculates this objects downward force using mass and gravity. 
         Vector3 acceleration = force / mass;                    // Part2: Calculates acceleration using force and mass.
         velocity += acceleration * dt;                          // Part2: Updates velocity using acceleration and real time.
         transform.position += velocity * dt;                    // Part2: Updates object position based on velocity and real time.
+
+
 
         //---GROUND COLLISION---//
 
@@ -51,6 +54,8 @@ public class CircleCollision : MonoBehaviour
 
             transform.position += upOffset;                                         // Part2: Objects position and upOffset are added, replacing the objects position.
         }
+
+
 
         //---CONTROL VECTORS---//
 
@@ -74,6 +79,8 @@ public class CircleCollision : MonoBehaviour
             direction += Vector3.right * speed * dt;
         }
         transform.position += direction;                // Part2: Applies velocity to object position.
+
+
 
         //---IMPULSE JUMP---//
 
@@ -107,6 +114,7 @@ public class CircleCollision : MonoBehaviour
             }
         }
     }
+
     bool CircleCollider(Vector3 point, Vector3 circleCenter, float radius)
     {
         float distanceSquared = (point.x - circleCenter.x) * (point.x - circleCenter.x) +           // Calculates the distance between the point and the center of the circle
