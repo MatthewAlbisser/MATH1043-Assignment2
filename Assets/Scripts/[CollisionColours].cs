@@ -14,7 +14,7 @@ public class CollisionColours : MonoBehaviour
         bool capsuleCircle = CollisionCapsuleCircle(capsuleT.position, circleT.position, 0.5f, 0.5f, 1f);   // Colour bools for each method combination of collision. 
         bool squareCapsule = CollisionSquareCapsule(squareT.position, capsuleT.position, 0.5f, 0.5f, 1f);
 
-        Color circleC = Color.red;          
+        Color circleC = Color.red;
         Color squareC = Color.red;       // Part1: Declares object colours.
         Color capsuleC = Color.red;
 
@@ -65,16 +65,24 @@ public class CollisionColours : MonoBehaviour
 
         if (distanceX <= capsuleRadius || distanceY <= capsuleRadius) return true;
 
-        float cornerDistanceSquared = Mathf.Pow((distanceX - capsuleRadius), 2) + Mathf.Pow((distanceY - capsuleRadius), 2);
+        float halfHeight = capsuleHeight * 0.5f;
+        float distanceToTopSphere = Mathf.Sqrt((circleCenter.x - capsuleCenter.x) * (circleCenter.x - capsuleCenter.x) +
+                                                       (circleCenter.y - capsuleCenter.y - halfHeight) * (circleCenter.y - capsuleCenter.y - halfHeight));
 
-        return cornerDistanceSquared <= (circleRadius * circleRadius);
+        float distanceToBottomSphere = Mathf.Sqrt((circleCenter.x - capsuleCenter.x) * (circleCenter.x - capsuleCenter.x) +
+                                                  (circleCenter.y - capsuleCenter.y + halfHeight) * (circleCenter.y - capsuleCenter.y + halfHeight));
+
+        if (distanceToTopSphere <= circleRadius || distanceToBottomSphere <= circleRadius)
+        {
+            return true; // Inside one of the hemispherical ends
+        }
+        return false; // Outside the capsule
     }
-
     bool CollisionSquareCapsule(Vector2 squareCenter, Vector2 capsuleCenter, float squareHalfLength, float capsuleRadius, float capsuleHeight)
     {
         float halfSquareSide = squareHalfLength;
         float deltaX = Mathf.Abs(capsuleCenter.x - squareCenter.x); // Part1: Calculates the distances between centers.
-        float deltaY = Mathf.Abs(capsuleCenter.y - squareCenter.y);         
+        float deltaY = Mathf.Abs(capsuleCenter.y - squareCenter.y);
 
         float combinedRadius = capsuleRadius + halfSquareSide;      // Part1: Calculate both objects radius sum.
 

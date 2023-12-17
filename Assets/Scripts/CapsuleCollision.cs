@@ -23,6 +23,7 @@ public class CapsuleCollision : MonoBehaviour
     void Start()
     {
         objectSize = transform.localScale;          // Part2: Vector for this objects size saved as variable on game start.
+        initialPosition = transform.position;
     }
 
     void Update()
@@ -81,26 +82,27 @@ public class CapsuleCollision : MonoBehaviour
         if (isJumping)
         {
             float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;
+
             if (jumpProgress <= 1.0f)
             {
-                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2)); 
+                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2)); // Simple quadratic jump curve
                 transform.position = initialPosition + Vector3.up * jumpDistance;
             }
             else
             {
                 isJumping = false;
-                transform.position = initialPosition; 
+                transform.position = initialPosition; // Reset the object's position after the jump
             }
         }
+
+
+        // Check for mouse clicks
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = Camera.main.transform.position.z;
-
-            Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             // Check if the mouse click is within the capsule using math-based collision detection
-            if (IsPointInsideCapsule(worldMousePos, transform.position, capsuleRadius, capsuleHeight))
+            if (IsPointInsideCapsule2D(mousePos, (Vector3)transform.position, capsuleRadius, capsuleHeight))
             {
                 if (!isJumping)
                 {
@@ -110,24 +112,24 @@ public class CapsuleCollision : MonoBehaviour
             }
         }
     }
-    bool IsPointInsideCapsule(Vector3 point, Vector3 capsuleCenter, float radius, float height)
-    {
-        float distanceFromCenterXZ = Mathf.Sqrt((point.x - capsuleCenter.x) * (point.x - capsuleCenter.x) +
-                                               (point.z - capsuleCenter.z) * (point.z - capsuleCenter.z));
 
-        if (distanceFromCenterXZ <= radius && point.y >= capsuleCenter.y - height / 2 && point.y <= capsuleCenter.y + height / 2)
+    bool IsPointInsideCapsule2D(Vector2 point, Vector2 capsuleCenter, float radius, float height)
+    {
+        float distanceX = Mathf.Abs(point.x - capsuleCenter.x);
+        float distanceY = Mathf.Abs(point.y - capsuleCenter.y);
+
+        if (distanceX <= radius && distanceY <= height * 0.5f)
         {
-            return true;
+            return true; // Inside the cylindrical part
         }
 
-        float distanceToTopEnd = Mathf.Sqrt((point.x - capsuleCenter.x) * (point.x - capsuleCenter.x) +
-                                            (point.y - capsuleCenter.y - height / 2) * (point.y - capsuleCenter.y - height / 2) +
-                                            (point.z - capsuleCenter.z) * (point.z - capsuleCenter.z));
+        if (distanceX <= radius && (distanceY >= height * 0.5f - radius || distanceY <= radius - height * 0.5f))
+        {
+            return true; // Inside one of the semicircular ends
+        }
 
-        float distanceToBottomEnd = Mathf.Sqrt((point.x - capsuleCenter.x) * (point.x - capsuleCenter.x) +
-                                               (point.y - capsuleCenter.y + height / 2) * (point.y - capsuleCenter.y + height / 2) +
-                                               (point.z - capsuleCenter.z) * (point.z - capsuleCenter.z));
-
-        return distanceToTopEnd <= radius || distanceToBottomEnd <= radius;
+        return false; // Outside the capsule
     }
 }
+
+

@@ -96,10 +96,7 @@ public class CircleCollision : MonoBehaviour
         {
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = Camera.main.transform.position.z;
-
             Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            // Check if the mouse click is within the circle using math-based collision detection
             if (IsPointInsideCircle(worldMousePos, transform.position, circleRadius))
             {
                 if (!isJumping)
@@ -112,10 +109,9 @@ public class CircleCollision : MonoBehaviour
     }
     bool IsPointInsideCircle(Vector3 point, Vector3 circleCenter, float radius)
     {
-        // Calculate the distance between the point and the center of the circle
-        float distanceSquared = (point.x - circleCenter.x) * (point.x - circleCenter.x) +
+        float distanceSquared = (point.x - circleCenter.x) * (point.x - circleCenter.x) +           // Calculates the distance between the point and the center of the circle
                                 (point.y - circleCenter.y) * (point.y - circleCenter.y);
 
-        return distanceSquared <= (radius * radius);        // Returns true if the distance is less than or equal to the radius squared
+        return distanceSquared <= (radius * radius);                                            // Returns true if the distance is less than or equal to the radius squared
     }
 }

@@ -5,13 +5,13 @@ public class SquareCollision : MonoBehaviour
     public float sideLength;        // Part1: Of square
     public Vector2 size;            // Part1: Of square
 
-    private float mass = 10f;                       // Part2: Declared float for mass.
-    private float gravity = 9.8f;                   // Part2: Declared float for gravity.
-    private Vector3 objectSize;             // Part2: Vector for Initial object size.
-    private Vector3 velocity = Vector3.zero; // Part2: Vector for Initial velocity.
+    private float mass = 10f;                   // Part2: Declared float for mass.
+    private float gravity = 9.8f;               // Part2: Declared float for gravity.
+    private Vector3 objectSize;                 // Part2: Vector for Initial object size.
+    private Vector3 velocity = Vector3.zero;    // Part2: Vector for Initial velocity.
 
-    private float jumpHeight = 10.0f;        // Part3:
-    private float jumpDuration = 0.5f;       // Part3:
+    private float jumpHeight = 10.0f;       // Part3:
+    private float jumpDuration = 1.0f;      // Part3:
     private float jumpStartTime;            // Part3:
     private bool isJumping = false;         // Part3:
     private Vector3 initialPosition;        // Part3:
@@ -47,7 +47,7 @@ public class SquareCollision : MonoBehaviour
             transform.position += upOffset;                                     // Part2: Objects position and upOffset are added, replacing the objects position.
         }
 
-        //---CONTROL VECTORS---//
+    //---CONTROL VECTORS---//
 
         Vector3 direction = Vector3.zero;           // Part2: When no key is pressed, all player created directional force reverts back to zero.
         float speed = 5f;                           // Part3: Simple float to hold object speed. Readonly.
@@ -70,14 +70,14 @@ public class SquareCollision : MonoBehaviour
         }
         transform.position += direction;                // Part2: Applies velocity to object position.
 
-        //---IMPULSE JUMP---//
+    //---IMPULSE JUMP---//
 
         if (isJumping)                                                                          // Part3: If isJumping is activated...
         {
             float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;                    // Part3: Float to constantly update (time minus jumpStartTime) divided by jumpDiraction.
-            if (jumpProgress <= 1.0f)                                                           // Part3: If jumpProgress is less or equal to 1.0f...
+            if (jumpProgress <= 1.5f)                                                           // Part3: If jumpProgress is less or equal to 1.0f...
             {
-                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2));   // Part3: Quadratic jump curve
+                float jumpDistance = jumpHeight * (1 - Mathf.Pow((4 * jumpProgress - 1), 2));   // Part3: Quadratic jump curve
                 transform.position = initialPosition + Vector3.up * jumpDistance;               // Part3:
             }
             else
