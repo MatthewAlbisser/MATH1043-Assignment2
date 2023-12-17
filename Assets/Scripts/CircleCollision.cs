@@ -6,19 +6,18 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class CircleCollision : MonoBehaviour
 {
     public float radius;         // Part1: Of circle
-    float speed = 5.0f;          // Part1: Simple float to hold object speed.
 
-    float mass = 15f;          // Part2: Declared float for mass.
-    float gravity = 9.8f;       // Part2: Declared float for gravity.
+    private float mass = 15f;          // Part2: Declared float for mass.
+    private float gravity = 9.8f;       // Part2: Declared float for gravity.
     private Vector3 objectSize;                     // Part2: Vector for Initial object size.
-    public Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
+    private Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
 
-    public float jumpHeight = 10.0f;        // Part3:
-    public float jumpDuration = 0.5f;       // Part3:
+    private float jumpHeight = 10.0f;        // Part3:
+    private float jumpDuration = 0.5f;       // Part3:
     private float jumpStartTime;            // Part3:
     private bool isJumping = false;         // Part3:
     private Vector3 initialPosition;        // Part3:
-    public float circleRadius = 1.0f;       // Part3:
+    private float circleRadius = 0.5f;       // Part3:
 
     void Start()
     {
@@ -52,25 +51,29 @@ public class CircleCollision : MonoBehaviour
 
             transform.position += upOffset;                                         // Part2: Objects position and upOffset are added, replacing the objects position.
         }
-        Vector3 direction = Vector3.zero;               // Part1: No button pressed = all directional movement to zero.
-        if (Input.GetKey(KeyCode.T))
+
+        //---CONTROL VECTORS---//
+
+        Vector3 direction = Vector3.zero;           // Part2: When no key is pressed, all player created directional force reverts back to zero.
+        float speed = 5f;                           // Part3: Simple float to hold object speed. Readonly.
+
+        if (Input.GetKey(KeyCode.T))                // Part2: If set key is pressed...
         {
-            transform.Translate(Vector3.up * speed * dt);
+            direction += Vector3.up * speed * dt;   // Part2: Object moves in set direction with a magnitude of speed by time. 
         }
         else if (Input.GetKey(KeyCode.G))
         {
-            transform.Translate(Vector3.down * speed * dt);
+            direction += Vector3.down * speed * dt;
         }
-
         if (Input.GetKey(KeyCode.F))
         {
-            transform.Translate(Vector3.left * speed * dt);
+            direction += Vector3.left * speed * dt;
         }
         else if (Input.GetKey(KeyCode.H))
         {
-            transform.Translate(Vector3.right * speed * dt);
+            direction += Vector3.right * speed * dt;
         }
-        transform.position += velocity * dt;    // Part2: Applies velocity to object position.
+        transform.position += direction;                // Part2: Applies velocity to object position.
 
         //---IMPULSE JUMP---//
 
@@ -96,9 +99,8 @@ public class CircleCollision : MonoBehaviour
 
             Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-            float distanceToClick = Vector3.Distance(transform.position, worldMousePos);                // Checks if the mouse click is within the circle
-
-            if (distanceToClick <= circleRadius)
+            // Check if the mouse click is within the circle using math-based collision detection
+            if (IsPointInsideCircle(worldMousePos, transform.position, circleRadius))
             {
                 if (!isJumping)
                 {
@@ -107,5 +109,13 @@ public class CircleCollision : MonoBehaviour
                 }
             }
         }
+    }
+    bool IsPointInsideCircle(Vector3 point, Vector3 circleCenter, float radius)
+    {
+        // Calculate the distance between the point and the center of the circle
+        float distanceSquared = (point.x - circleCenter.x) * (point.x - circleCenter.x) +
+                                (point.y - circleCenter.y) * (point.y - circleCenter.y);
+
+        return distanceSquared <= (radius * radius);        // Returns true if the distance is less than or equal to the radius squared
     }
 }

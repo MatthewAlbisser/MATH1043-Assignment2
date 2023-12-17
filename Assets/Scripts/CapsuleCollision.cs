@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class CapsuleCollision : MonoBehaviour
 {
-    public float radius;    // Part1: Of capsule
-    public float height;    // Part1: Of capsule
-    float speed = 5.0f;     // Part1: Simple float to hold object speed.
-
     private Vector3 objectSize;                     // Part2: Vector for Initial object size.
-    public Vector3 velocity         = Vector3.zero; // Part2: Vector for Initial velocity.
-    private Vector3 acceleration    = Vector3.zero; // Part2: Vector for Initial acceleration.
-    private Vector3 force           = Vector3.zero; // Part2: Vector for Initial force.
+    private Vector3 velocity = Vector3.zero;         // Part2: Vector for Initial velocity.
+    private Vector3 acceleration = Vector3.zero;    // Part2: Vector for Initial acceleration.
+    private Vector3 force = Vector3.zero;           // Part2: Vector for Initial force.
+
+    private float jumpHeight = 5.0f;     // Part3:
+    private float jumpDuration = 0.5f;   // Part3:
+    private float capsuleRadius = 0.5f;  // Part3:
+    private float capsuleHeight = 2.0f;  // Part3:
+
+    private bool isJumping = false;
+    private float jumpStartTime;
+    private Vector3 initialPosition;
+
 
     void Start()
     {
@@ -21,8 +28,8 @@ public class CapsuleCollision : MonoBehaviour
     void Update()
     {
         float dt = Time.deltaTime;                  // Part1: Float that holds real time.
-    //---GRAVITY FORCE---//
-        float mass = 30f;    // Part2: Declared float for mass.
+                                                    //---GRAVITY FORCE---//
+        float mass = 30f;       // Part2: Declared float for mass.
         float gravity = 9.8f;   // Part2: Declared float for gravity.
 
         Vector3 gravityMass = mass * Vector3.down * gravity;    // Part2: Calculates this objects downward force and calls it gravityMass.
@@ -33,7 +40,7 @@ public class CapsuleCollision : MonoBehaviour
         transform.position += velocity * dt;                    // Part2: Updates object position based on velocity and real time.
 
         force = Vector3.zero;                                   // Part2: Reverts back force vector every frame; doesnt stack velocity.
-    //---GROUND COLLISION---//
+                                                                //---GROUND COLLISION---//
         Ground ground = FindObjectOfType<Ground>();             // Part2: Declares a variable for the Ground game object.
 
         bool hasCollided = ground.GroundCollision(transform.position, objectSize.y);    // Part2: Declares a bool for the activation of the GroundCollision method in the Ground script.
@@ -41,29 +48,86 @@ public class CapsuleCollision : MonoBehaviour
         {
             velocity = Vector3.zero;                                                // Part2: Velcocity for this object is reset.
             acceleration = Vector3.zero;                                            // Part2: Acceleration for this object is reset.
-            float radiusY = objectSize.y;                                       // Part2: Float to hold the Y axis points of the falling object.
+            float radiusY = objectSize.y;                                           // Part2: Float to hold the Y axis points of the falling object.
             float distanceToGround = Mathf.Abs(transform.position.y - radiusY);     // Part2: Float to hold the remaining Y axis distance from the ground.
             Vector3 upOffset = Vector3.up * distanceToGround;                       // Part2: Declares vector thats pushing upwards based on the total distance from the ground. 
 
             transform.position += upOffset;                                         // Part2: Objects position and upOffset are added, replacing the objects position.
         }
-        Vector3 direction = Vector3.zero;           // Part1: No button pressed = all directional movement to zero.
-        if (Input.GetKey(KeyCode.I))
+
+        //---CONTROL VECTORS---//
+
+        Vector3 direction = Vector3.zero;           // Part2: When no key is pressed, all player created directional force reverts back to zero.
+        float speed = 5f;                           // Part3: Simple float to hold object speed. Readonly.
+
+        if (Input.GetKey(KeyCode.I))                // Part2: If set key is pressed...
         {
-            transform.Translate(Vector3.up * speed * dt);
+            direction += Vector3.up * speed * dt;   // Part2: Object moves in set direction with a magnitude of speed by time. 
         }
         else if (Input.GetKey(KeyCode.K))
         {
-            transform.Translate(Vector3.down * speed * dt);
+            direction += Vector3.down * speed * dt;
         }
-
         if (Input.GetKey(KeyCode.J))
         {
-            transform.Translate(Vector3.left * speed * dt);
+            direction += Vector3.left * speed * dt;
         }
         else if (Input.GetKey(KeyCode.L))
         {
-            transform.Translate(Vector3.right * speed * dt);
+            direction += Vector3.right * speed * dt;
         }
+        transform.position += direction;            // Part2: Applies velocity to object position.
+
+        if (isJumping)
+        {
+            float jumpProgress = (Time.time - jumpStartTime) / jumpDuration;
+            if (jumpProgress <= 1.0f)
+            {
+                float jumpDistance = jumpHeight * (1 - Mathf.Pow((2 * jumpProgress - 1), 2)); 
+                transform.position = initialPosition + Vector3.up * jumpDistance;
+            }
+            else
+            {
+                isJumping = false;
+                transform.position = initialPosition; 
+            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Camera.main.transform.position.z;
+
+            Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+            // Check if the mouse click is within the capsule using math-based collision detection
+            if (IsPointInsideCapsule(worldMousePos, transform.position, capsuleRadius, capsuleHeight))
+            {
+                if (!isJumping)
+                {
+                    isJumping = true;
+                    jumpStartTime = Time.time;
+                }
+            }
+        }
+    }
+    bool IsPointInsideCapsule(Vector3 point, Vector3 capsuleCenter, float radius, float height)
+    {
+        float distanceFromCenterXZ = Mathf.Sqrt((point.x - capsuleCenter.x) * (point.x - capsuleCenter.x) +
+                                               (point.z - capsuleCenter.z) * (point.z - capsuleCenter.z));
+
+        if (distanceFromCenterXZ <= radius && point.y >= capsuleCenter.y - height / 2 && point.y <= capsuleCenter.y + height / 2)
+        {
+            return true;
+        }
+
+        float distanceToTopEnd = Mathf.Sqrt((point.x - capsuleCenter.x) * (point.x - capsuleCenter.x) +
+                                            (point.y - capsuleCenter.y - height / 2) * (point.y - capsuleCenter.y - height / 2) +
+                                            (point.z - capsuleCenter.z) * (point.z - capsuleCenter.z));
+
+        float distanceToBottomEnd = Mathf.Sqrt((point.x - capsuleCenter.x) * (point.x - capsuleCenter.x) +
+                                               (point.y - capsuleCenter.y + height / 2) * (point.y - capsuleCenter.y + height / 2) +
+                                               (point.z - capsuleCenter.z) * (point.z - capsuleCenter.z));
+
+        return distanceToTopEnd <= radius || distanceToBottomEnd <= radius;
     }
 }

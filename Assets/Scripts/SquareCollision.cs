@@ -4,15 +4,14 @@ public class SquareCollision : MonoBehaviour
 {
     public float sideLength;        // Part1: Of square
     public Vector2 size;            // Part1: Of square
-    readonly float speed = 5.0f;    // Part1: Simple float to hold object speed. Readonly.
 
-    float mass = 10f;                       // Part2: Declared float for mass.
-    float gravity = 9.8f;                   // Part2: Declared float for gravity.
+    private float mass = 10f;                       // Part2: Declared float for mass.
+    private float gravity = 9.8f;                   // Part2: Declared float for gravity.
     private Vector3 objectSize;             // Part2: Vector for Initial object size.
-    public Vector3 velocity = Vector3.zero; // Part2: Vector for Initial velocity.
+    private Vector3 velocity = Vector3.zero; // Part2: Vector for Initial velocity.
 
-    public float jumpHeight = 10.0f;        // Part3:
-    public float jumpDuration = 0.5f;       // Part3:
+    private float jumpHeight = 10.0f;        // Part3:
+    private float jumpDuration = 0.5f;       // Part3:
     private float jumpStartTime;            // Part3:
     private bool isJumping = false;         // Part3:
     private Vector3 initialPosition;        // Part3:
@@ -20,8 +19,8 @@ public class SquareCollision : MonoBehaviour
 
     void Start()
     {
-        objectSize = transform.localScale;  // Part2: Vector for this objects size saved as variable on game start.
-        initialPosition = transform.position;
+        objectSize = transform.localScale;      // Part2: Vector for this objects size saved as variable on game start.
+        initialPosition = transform.position;   // Part3: 
     }
 
     void Update()
@@ -48,26 +47,28 @@ public class SquareCollision : MonoBehaviour
             transform.position += upOffset;                                     // Part2: Objects position and upOffset are added, replacing the objects position.
         }
 
-    //---CONTROL VECTORS---//
+        //---CONTROL VECTORS---//
 
-        Vector3 direction = Vector3.zero;       // Part2: When no key is pressed, all player created directional force reverts back to zero.
-        if (Input.GetKey(KeyCode.W))            // Part2: If set key is pressed...
+        Vector3 direction = Vector3.zero;           // Part2: When no key is pressed, all player created directional force reverts back to zero.
+        float speed = 5f;                           // Part3: Simple float to hold object speed. Readonly.
+
+        if (Input.GetKey(KeyCode.W))                // Part2: If set key is pressed...
         {
-            velocity += Vector3.up * speed;     // Part2: Object moves in set direction with a magnitude of speed by time. 
+            direction += Vector3.up * speed * dt;   // Part2: Object moves in set direction with a magnitude of speed by time. 
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            velocity += Vector3.down * speed;
+            direction += Vector3.down * speed * dt;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            velocity += Vector3.left * speed;
+            direction += Vector3.left * speed * dt;
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            velocity += Vector3.right * speed;
+            direction += Vector3.right * speed * dt;
         }
-        transform.position += velocity * dt;    // Part2: Applies velocity to object position.
+        transform.position += direction;                // Part2: Applies velocity to object position.
 
         //---IMPULSE JUMP---//
 

@@ -491,7 +491,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &1582250537
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,9 +590,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sideLength: 1
   size: {x: 1, y: 1}
-  velocity: {x: 0, y: 0, z: 0}
-  jumpHeight: 5
-  jumpDuration: 0.5
 --- !u!1 &2031533418
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,7 +669,7 @@ Transform:
   m_GameObject: {fileID: 2031533418}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: 0.5, z: 0}
+  m_LocalPosition: {x: 4, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -691,9 +687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79fb9573c23e2ea46aefab41a510d1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.5
-  height: 2
-  velocity: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
