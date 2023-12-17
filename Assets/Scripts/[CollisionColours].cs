@@ -74,25 +74,25 @@ public class CollisionColours : MonoBehaviour
 
         if (distanceToTopSphere <= circleRadius || distanceToBottomSphere <= circleRadius)
         {
-            return true; // Inside one of the hemispherical ends
+            return true; 
         }
-        return false; // Outside the capsule
+        return false; 
     }
     bool CollisionSquareCapsule(Vector2 squareCenter, Vector2 capsuleCenter, float squareHalfLength, float capsuleRadius, float capsuleHeight)
     {
         float halfSquareSide = squareHalfLength;
-        float deltaX = Mathf.Abs(capsuleCenter.x - squareCenter.x); // Part1: Calculates the distances between centers.
+        float deltaX = Mathf.Abs(capsuleCenter.x - squareCenter.x); 
         float deltaY = Mathf.Abs(capsuleCenter.y - squareCenter.y);
 
-        float combinedRadius = capsuleRadius + halfSquareSide;      // Part1: Calculate both objects radius sum.
+        float combinedRadius = capsuleRadius + halfSquareSide;      
 
-        bool xOverlap = deltaX <= combinedRadius;                   // Part1: Check for overlap along the x-axis and y-axis
+        bool xOverlap = deltaX <= combinedRadius;                   
         bool yOverlap = deltaY <= combinedRadius;
-        if (xOverlap && yOverlap)                                   // Part1: Check if there's an intersection on both x and y axes
+        if (xOverlap && yOverlap)                                   
         {
-            return true;                                            // Part1: When there's a collision, set bool to true.
+            return true;                                            
         }
-        float cornerDistanceSquared = Mathf.Pow(deltaX - halfSquareSide, 2) + Mathf.Pow(deltaY - halfSquareSide, 2);    // Part1: Check for collision with the capsule's rounded ends (circles)
+        float cornerDistanceSquared = Mathf.Pow(deltaX - halfSquareSide, 2) + Mathf.Pow(deltaY - halfSquareSide, 2);   
         return cornerDistanceSquared <= (capsuleRadius * capsuleRadius);
     }
 }
